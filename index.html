@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ô Palais des Soins | Épilation Laser & Institut de Beauté à Toulouse</title>
-<meta name="description" content="Ô Palais des Soins à Toulouse : experte en épilation laser définitive, soins visage Blooméa et massages bien-être. Profitez d'un diagnostic personnalisé et de soins d'exception.">
+<title>Ô Palais des Soins — Institut de Beauté Premium à Toulouse</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -1158,6 +1157,12 @@ body {
   .pricing-item { flex-direction: column; gap: 6px; }
   .pricing-item-dots { display: none; }
 
+  /* Force ALL reveal sections visible on mobile to prevent black screens */
+  .reveal {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
   .footer-top { grid-template-columns: 1fr; gap: 40px; }
   .footer-bottom { flex-direction: column; text-align: center; }
 
@@ -1855,7 +1860,20 @@ const observer = new IntersectionObserver((entries) => {
       entry.target.classList.add('visible');
     }
   });
-}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+}, { threshold: 0.01, rootMargin: '0px 0px -20px 0px' });
+
+// Fallback for mobile: force reveal elements that are near the viewport
+function forceRevealFallback() {
+  reveals.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.top < windowHeight + 100 && rect.bottom > -100) {
+      el.classList.add('visible');
+    }
+  });
+}
+setTimeout(forceRevealFallback, 1200);
+window.addEventListener('scroll', forceRevealFallback, { passive: true });
 
 reveals.forEach(el => observer.observe(el));
 
@@ -1890,10 +1908,6 @@ if (navToggle) {
   });
 }
 </script>
-<script defer src="/_vercel/speed-insights/script.js"></script>
-<script defer src="/_vercel/insights/script.js"></script>
+
 </body>
-
 </html>
-
-
